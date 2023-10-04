@@ -26,7 +26,11 @@ class JSON_saver():
         for item in vacancies:
             if item['pay'] == params:
                 output.append(Vacancy.from_json(item))
-        return output
+                break
+        if len(output)==0:
+            return None
+        else:
+            return output[0]
     
     def delete_vacancy(self, vacancy):
         with open (FILE, 'r', encoding='utf-8') as f:
