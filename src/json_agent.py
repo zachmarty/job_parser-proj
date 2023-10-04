@@ -2,24 +2,27 @@ import json
 from src.vacancy import Vacancy
 FILE = 'vacancies.json'
 
-class JSON_saver():
-    def check_for_repeat(self, vacancy:Vacancy):
+class JSON_agent():
+    @staticmethod
+    def check_for_repeat(vacancy:Vacancy):
         with open(FILE, 'r', encoding='utf-8') as f:
             vacancies = json.load(f)
             if vacancy.json() in vacancies:
                 return False
             else:
                 return True
-
-    def add_vacancy(self, vacancy:Vacancy):
-        if self.check_for_repeat(vacancy):
+    @staticmethod
+    def add_vacancy(vacancy:Vacancy):
+        if JSON_agent.check_for_repeat(vacancy):
             with open(FILE, 'r', encoding='utf-8') as f:
                 vacancies = json.load(f)
             vacancies.append(vacancy.json())
             with open(FILE, 'w', encoding='utf-8') as f:
                 json.dump(vacancies, f, ensure_ascii=False)
 
-    def get_vacancies_by_salary(self, params):
+    @staticmethod
+    def get_vacancies_by_salary(params):
+        params['currency'] = 'RUR'
         with open (FILE, 'r', encoding='utf-8') as f:
             vacancies = json.load(f)
         output = []
@@ -32,11 +35,20 @@ class JSON_saver():
         else:
             return output[0]
     
-    def delete_vacancy(self, vacancy):
+    @staticmethod
+    def delete_vacancy_by_title(title):
         with open (FILE, 'r', encoding='utf-8') as f:
             vacancies = json.load(f)
-        for item in vacancies:
-            if item == vacancy.json():
-                vacancies.remove(vacancy.json())
+        for vacancy in vacancies:
+            if vacancy['title'] == title:
+                vacancies.remove(vacancy)
+                break
         with open(FILE, 'w', encoding='utf-8') as f:
             json.dump(vacancies, f, ensure_ascii=False)
+
+    @staticmethod
+    def show_vacancies_title():
+        with open (FILE, 'r', encoding='utf-8') as f:
+            vacancies = json.load(f)
+        for vacancy in vacancies:
+            print(vacancy['title'])
