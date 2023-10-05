@@ -1,5 +1,5 @@
 import json
-from src.vacancy import Vacancy
+from job_parser_proj.vacancy import Vacancy
 FILE = 'vacancies.json'
 
 class JSON_agent():
@@ -19,6 +19,9 @@ class JSON_agent():
             vacancies.append(vacancy.json())
             with open(FILE, 'w', encoding='utf-8') as f:
                 json.dump(vacancies, f, ensure_ascii=False)
+            return True
+        else:
+            return False
 
     @staticmethod
     def get_vacancies_by_salary(params):
@@ -39,12 +42,18 @@ class JSON_agent():
     def delete_vacancy_by_title(title):
         with open (FILE, 'r', encoding='utf-8') as f:
             vacancies = json.load(f)
+        f = False
         for vacancy in vacancies:
             if vacancy['title'] == title:
                 vacancies.remove(vacancy)
+                f = True
                 break
-        with open(FILE, 'w', encoding='utf-8') as f:
-            json.dump(vacancies, f, ensure_ascii=False)
+        if f:
+            with open(FILE, 'w', encoding='utf-8') as f:
+                json.dump(vacancies, f, ensure_ascii=False)
+            return True
+        else:
+            return False
 
     @staticmethod
     def show_vacancies_title():

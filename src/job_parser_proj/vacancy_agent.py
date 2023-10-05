@@ -1,4 +1,4 @@
-from src.vacancy import Vacancy
+from job_parser_proj.vacancy import Vacancy
 
 class Vacancy_agent():
     @staticmethod
@@ -18,7 +18,7 @@ class Vacancy_agent():
         return output
     
     @staticmethod
-    def filter_vacancies(hh_ru_collection: list = [], super_job_collection: list = [], key_words = ['Python']):
+    def filter_vacancies_by_keywords(hh_ru_collection: list = [], super_job_collection: list = [], key_words = ['Python']):
         output = []
         for vacancy in hh_ru_collection + super_job_collection:
             title = [x.lower() for x in vacancy.tittle.split()]
@@ -28,4 +28,8 @@ class Vacancy_agent():
                     output.append(vacancy)
                     break
         return output
+    
+    @staticmethod
+    def filter_vacancies_by_salary():
+        pass
 

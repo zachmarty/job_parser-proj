@@ -9,6 +9,11 @@ readme = "README.md"
 python = "^3.11"
 requests = "^2.31.0"
 
+[tool.poetry.scripts]
+test = "scripts.scripts:test"
+load-vacancies-to-json = "scripts.scripts:load_vacancies_to_json"
+show-vacancies-title = "scripts.scripts:show_vacancies_by_title"
+delete-vacancy-by-title = "scripts.scripts:delete_vacancy_by_title"
 
 [build-system]
 requires = ["poetry-core"]
