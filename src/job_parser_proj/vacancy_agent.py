@@ -1,6 +1,13 @@
 from job_parser_proj.vacancy import Vacancy
 
+
+"""
+Класс для работы с вакансиями
+"""
 class Vacancy_agent():
+    """
+    Метод, который получает на вход словарь из superjob и возвращает массив Vacancy
+    """
     @staticmethod
     def pars_super_job(vacancies):
         output = []
@@ -14,6 +21,9 @@ class Vacancy_agent():
             output.append(tmp)
         return output
     
+    """
+    Метод, который получает на вход словарь из hh.ru и возвращает массив Vacancy
+    """
     @staticmethod
     def pars_hh_ru(vacancies):
         output = []
@@ -28,6 +38,9 @@ class Vacancy_agent():
             output.append(tmp)
         return output
     
+    """
+    Метод, который возвращает названия вакансий по заданным словам для поиска
+    """
     @staticmethod
     def filter_vacancies_by_keywords(vacancies:list, key_words = []):
         output = []
@@ -43,6 +56,9 @@ class Vacancy_agent():
                     break
         return output
     
+    """
+    Метод, который возвращает названия вакансий по заданному диапазону заработной платы
+    """
     @staticmethod
     def filter_vacancies_by_salary(vacancies: list, sfrom, sto):
         output = []

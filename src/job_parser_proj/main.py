@@ -1,5 +1,8 @@
 from scripts.scripts import *
 
+"""
+Файл, в котором представлена работа всех скриптов поочередно
+"""
 if __name__== "__main__":
     load_vacancies_to_json()
     print()
