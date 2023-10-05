@@ -5,7 +5,12 @@ class Vacancy_agent():
     def pars_super_job(vacancies):
         output = []
         for vacancy in vacancies:
-            tmp = Vacancy(vacancy['profession'], vacancy['link'], {'from': vacancy['payment_from'], 'to': vacancy['payment_to'], 'currency': 'RUR', 'gross': False}, vacancy['candidat'])
+            if vacancy['payment_from'] != None:
+                tmp = Vacancy(vacancy['profession'], vacancy['link'], vacancy['payment_from'], vacancy['candidat'])
+            elif vacancy['payment_to'] != None:
+                tmp = Vacancy(vacancy['profession'], vacancy['link'], vacancy['payment_to'], vacancy['candidat'])
+            else:
+                tmp = Vacancy(vacancy['profession'], vacancy['link'], '0', vacancy['candidat'])
             output.append(tmp)
         return output
     
@@ -13,23 +18,39 @@ class Vacancy_agent():
     def pars_hh_ru(vacancies):
         output = []
         for vacancy in vacancies:
-            tmp = Vacancy(vacancy['name'], f'https://hh.ru/vacancy/{vacancy["id"]}', vacancy['salary'], vacancy['snippet']['requirement'])
+            if vacancy['salary'] != None:
+                if vacancy['salary']['from'] != None:
+                    tmp = Vacancy(vacancy['name'], f'https://hh.ru/vacancy/{vacancy["id"]}', vacancy['salary']['from'], vacancy['snippet']['requirement'])
+                else:
+                    tmp = Vacancy(vacancy['name'], f'https://hh.ru/vacancy/{vacancy["id"]}', vacancy['salary']['to'], vacancy['snippet']['requirement'])
+            else:
+                tmp = Vacancy(vacancy['name'], f'https://hh.ru/vacancy/{vacancy["id"]}', "0", vacancy['snippet']['requirement'])
             output.append(tmp)
         return output
     
     @staticmethod
-    def filter_vacancies_by_keywords(hh_ru_collection: list = [], super_job_collection: list = [], key_words = ['Python']):
+    def filter_vacancies_by_keywords(vacancies:list, key_words = []):
         output = []
-        for vacancy in hh_ru_collection + super_job_collection:
-            title = [x.lower() for x in vacancy.tittle.split()]
-            requiremets = [x.lower() for x in vacancy.requirement.split()]
+        for vacancy in vacancies:
+            title = [x.lower() for x in vacancy.title.split()]
+            try:
+                requiremets = [x.lower() for x in vacancy.requirement.split()]
+            except:
+                requiremets = []
             for key_word in key_words:
                 if key_word.lower() in title or key_word.lower() in requiremets:
-                    output.append(vacancy)
+                    output.append(vacancy.title)
                     break
         return output
     
     @staticmethod
-    def filter_vacancies_by_salary():
-        pass
+    def filter_vacancies_by_salary(vacancies: list, sfrom, sto):
+        output = []
+        for vacancy in vacancies:
+            try:
+                if vacancy.pay >= sfrom and vacancy.pay <= sto:
+                    output.append(vacancy.title)
+            except:
+                pass
+        return output
 

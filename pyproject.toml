@@ -10,10 +10,15 @@ python = "^3.11"
 requests = "^2.31.0"
 
 [tool.poetry.scripts]
-test = "scripts.scripts:test"
 load-vacancies-to-json = "scripts.scripts:load_vacancies_to_json"
 show-vacancies-title = "scripts.scripts:show_vacancies_by_title"
-delete-vacancy-by-title = "scripts.scripts:delete_vacancy_by_title"
+delete-by-title = "scripts.scripts:delete_vacancy_by_title"
+clear-json = "scripts.scripts:clear_json"
+show-info-by-title = "scripts.scripts:show_info_by_title"
+get-vacancies-by-kwards = "scripts.scripts:get_vacancies_by_kwards"
+get-vacancies-by-salary = "scripts.scripts:get_vacancies_by_salary"
+sort-vacancies-by-salary = "scripts.scripts:sort_vacancies_by_salary"
+show-top-n = "scripts.scripts:show_top_n"
 
 [build-system]
 requires = ["poetry-core"]

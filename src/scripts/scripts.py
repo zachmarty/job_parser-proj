@@ -1,10 +1,7 @@
 from job_parser_proj.api import HH_Api, SuperJob_Api
 from job_parser_proj.vacancy_agent import Vacancy_agent
-from job_parser_proj.vacancy import Vacancy
 from job_parser_proj.json_agent import JSON_agent
-
-def test():
-    print('fine')
+from job_parser_proj.vacancy import Vacancy
 
 def load_vacancies_to_json():
     hh_vacancies_count = int(input('Введите количество вакансий для сайта hh.ru '))
@@ -32,3 +29,62 @@ def delete_vacancy_by_title():
         print(f'Вакансия {title} удалена')
     else:
         print(f'Вакансия {title} не найдена')
+
+def clear_json():
+    JSON_agent.clear_json()
+    print('Файл очищен')
+
+def show_info_by_title():
+    title = input('Введите название вакансии для поиска ')
+    JSON_agent.show_info_by_title(title)
+
+def get_vacancies_by_kwards():
+    kwards = input('Введите ключевые слова для поиска ').split()
+    vacancies = Vacancy.all_from_json()
+    filtered = Vacancy_agent.filter_vacancies_by_keywords(vacancies, kwards)
+    if len(filtered) > 0:
+        for title in filtered:
+            print(title)
+    else:
+        print('Вакансий по таким словам не найдено')
+
+def get_vacancies_by_salary():
+    try:
+        sfrom = int(input('Введите заработную плату от '))
+    except:
+        sfrom = 30000
+    try:
+        sto = int(input('Введите заработную плату до '))
+    except:
+        sto = 60000
+    vacancies = Vacancy.all_from_json()
+    filtered = Vacancy_agent.filter_vacancies_by_salary(vacancies, sfrom, sto)
+    if len(filtered) > 0:
+        for title in filtered:
+            print(title)
+    else:
+        print('Вакансий по такому диапазону зарплаты не найдено')
+
+def sort_vacancies_by_salary():
+    vacancies = Vacancy.all_from_json()
+    vacancies = sorted(vacancies, key=lambda x: int(x.pay), reverse=True)
+    JSON_agent.clear_json()
+    for vacancy in vacancies:
+        JSON_agent.add_vacancy(vacancy)
+    print('Файл отсортирован')
+
+def show_top_n():
+    try:
+        n = int(input('Введите количество вакансий для просмотра '))
+    except:
+        print('Число введено некорректно')
+        exit()
+    vacancies = Vacancy.all_from_json()
+    counter = 0
+    if n > len(vacancies):
+        n = len(vacancies)
+    while counter < n:
+        print(vacancies[counter].title)
+        counter += 1
+
+

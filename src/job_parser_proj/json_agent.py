@@ -61,3 +61,17 @@ class JSON_agent():
             vacancies = json.load(f)
         for vacancy in vacancies:
             print(vacancy['title'])
+
+    @staticmethod
+    def clear_json():
+        with open(FILE, 'w', encoding='utf-8') as f:
+                json.dump([], f, ensure_ascii=False)
+
+    @staticmethod
+    def show_info_by_title(title):
+        with open (FILE, 'r', encoding='utf-8') as f:
+            vacancies = Vacancy.all_from_json()
+        for vacancy in vacancies:
+            if vacancy.title == title:
+                vacancy.show_info()
+                break
